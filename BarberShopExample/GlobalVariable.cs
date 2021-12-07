@@ -8,20 +8,20 @@ namespace BarberShopExample
     /// </summary>
     public class GlobalVariable
     {
-        public static Semaphore maxCap = new Semaphore(20, 20); //capidade máxima de clientes fora da barbearia
+        public static Semaphore maxCap = new Semaphore(15, 15); //capacidade máxima de clientes fora da barbearia
         public static Semaphore sofa = new Semaphore(4, 4);
         public static Semaphore barbCadeira = new Semaphore(3, 3);
         public static Semaphore coord = new Semaphore(3, 3);
         public static Semaphore mutex1 = new Semaphore(1, 1);
         public static Semaphore mutex2 = new Semaphore(1, 1);
         public static Semaphore mutex3 = new Semaphore(1, 1);
-        public static Semaphore custoReady = new Semaphore(0, 25);
+        public static Semaphore clientePronto = new Semaphore(0, 25);
         public static Semaphore pagamento = new Semaphore(0, 25);
         public static Semaphore[] finished = new Semaphore[25];
         public static Semaphore[] sairBCadeira = new Semaphore[25];
         public static Semaphore[] receipt = new Semaphore[25];
         public static int numeroDeClientes = 25;
-        public static Queue<int> queue1 = new Queue<int>(25);//classe queue representa entra e saída de objetos
+        public static Queue<int> queue1 = new Queue<int>(25);//cria uma collection de FIFO
         public static Queue<int> queue2 = new Queue<int>(25);
         public static Queue<int> sofaQueue = new Queue<int>(4);
         public static Queue<int> barbCadeiraQueue = new Queue<int>(3);

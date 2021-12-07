@@ -11,7 +11,7 @@ namespace BarberShopExample
             int bCliente;
             while (true)
             {
-                custoReady.WaitOne();
+                clientePronto.WaitOne();
                 mutex2.WaitOne();
                 bCliente = queue1.Dequeue();
                 mutex2.Release();

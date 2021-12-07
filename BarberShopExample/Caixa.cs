@@ -5,7 +5,7 @@ namespace BarberShopExample
 {
     class Caixa
     {
-        ////////////////////////////////Cashier//////////////////////////////////////////////////
+        //---------------------------------------CAIXA-----------------------------------------//
         public void CaixaFunc()
         {
             int cCliente;
@@ -16,12 +16,12 @@ namespace BarberShopExample
                 ActPag();
                 coord.Release();
                 mutex3.WaitOne();
-                cCliente = queue2.Dequeue();
+                cCliente = queue2.Dequeue();//remove e retorna o primeiro objeto da lista
                 mutex3.Release();
-                receipt[cCliente].Release();
+                receipt[cCliente].Release();//adicionado na claase cCliente o retorno da queue2
             }
         }
-        /////////////////////////////////AcceptPay///////////////////////////////////////////////
+        //---------------------------------------TEMPOPAGAR-----------------------------------------//
         private void ActPag()
         {
             Thread.Sleep(1200);

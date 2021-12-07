@@ -10,6 +10,7 @@ namespace BarberShopExample
     class Clientes
     {
         //------------------------------------------------------------------------------------------//
+        //contador máximo e contador inicial definidos iguais para reservar todas as entradas para as novas threads
         static Semaphore entrarShop = new Semaphore(1, 1);
         static Semaphore sofaSemaphore = new Semaphore(1, 1);
         static Semaphore bCadeiraSemaphore = new Semaphore(1, 1);
@@ -39,12 +40,12 @@ namespace BarberShopExample
         public void ClientesFunc()
         {
             int custnr;
-            maxCap.WaitOne();
+            maxCap.WaitOne();//WaitOne indica ao semáforo que existe uma thread aguardando e incrementa a contagem no semáforo maxCap
             Entrar();
-            mutex1.WaitOne();
+            mutex1.WaitOne();//WaitOne controla a entrada da thread
             custnr = count;
             count++;
-            mutex1.Release();
+            mutex1.Release();//usado para liberar outra thread e decrementa a contagem do semáforo mutex1
             sofa.WaitOne();
             SitOnSofa();
             barbCadeira.WaitOne();
@@ -53,7 +54,7 @@ namespace BarberShopExample
             SentarNaCadeira();
             mutex2.WaitOne();
             queue1.Enqueue(custnr);
-            custoReady.Release();
+            clientePronto.Release();
             mutex2.Release();
             finished[custnr].WaitOne();
             SairDaCadeira();
@@ -68,10 +69,10 @@ namespace BarberShopExample
             maxCap.Release();
         }
         //-----------------------------------------ENTRAR----------------------------------------//
-        public void Entrar()
+        public void Entrar()//Método entrar
         {
-            entrarShop.WaitOne();
-            if (Convert.ToInt32(Thread.CurrentThread.Name) > 1)
+            entrarShop.WaitOne();//Controla a inicialização da thread entrarShop
+            if (Convert.ToInt32(Thread.CurrentThread.Name) > 1)//pega a thread em execução no momento pelo .Name converte para int
                 entrarShopX -= 60;
             if (entrarShopX <= 280)
             {
@@ -127,11 +128,18 @@ namespace BarberShopExample
             }
         }
         //-----------------------------------------SENTAR----------------------------------------//
+        /// <summary>
+        /// Pega o sofaNum da classe clientes e atribui o valor da função Dequeue
+        /// sobre o sofaQueue atual no caso [4], o Dequeue remove e retorna o primeiro
+        /// valor da lista sofaQueue
+        /// sofaCoordinate vai ser atribuido o valor da GefSofaLocation na classe barberform
+        /// pegando o sofaNum que vai de 1-4(quantidade maxima de sofas)
+        /// </summary>
         public void SitOnSofa()
         {
-            sofaSemaphore.WaitOne();
+            sofaSemaphore.WaitOne();//incrementa a contagem dentro do semáforo
             sofaNum = sofaQueue.Dequeue();
-            sofaSemaphore.Release();
+            sofaSemaphore.Release();//decrementa a contagem dentro do semáforo liberando a thread
             sofaCoordinate = (PointF)bf.GetSofaLocation(sofaNum);
             leftBeforeSitOnSofa = (int)tempPF.X - 25;
             while (tempPF.X > leftBeforeSitOnSofa)
